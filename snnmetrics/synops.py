@@ -10,19 +10,30 @@ class SynOps(Metric):
     higher_is_better: Optional[bool] = None
     full_state_update: bool = False
 
-    def __init__(self, connect_map: torch.Tensor):  # model: nn.Module):
+    def __init__(self, fanout: torch.Tensor, sample_time: Optional[float] = None):
         super().__init__()
+        self.fanout = fanout
+        self.sample_time = sample_time
         self.add_state(
             "synops_per_neuron",
-            default=torch.zeros(connect_map.shape),
+            default=[] if fanout.shape == torch.Size([]) else torch.zeros(fanout.shape),
             dist_reduce_fx="sum",
         )
         self.add_state("total", default=torch.tensor(0), dist_reduce_fx="sum")
-        self.connect_map = connect_map
 
     def update(self, output: torch.Tensor):
-        self.synops_per_neuron += output.sum(0) * self.connect_map
+        if self.fanout.shape == torch.Size([]):
+            self.synops_per_neuron.append(output.sum(0) * self.fanout)
+        else:
+            self.synops_per_neuron += output.sum(0) * self.fanout
         self.total += output.shape[0]
 
     def compute(self):
-        return self.synops_per_neuron / self.total
+        if self.fanout.shape == torch.Size([]):
+            synops = torch.stack(self.synops_per_neuron).sum(0) / self.total
+        else:
+            synops = self.synops_per_neuron / self.total
+        result_dict = {"synops_per_neuron": synops, "synops": synops.sum()}
+        if self.sample_time is not None:
+            result_dict["synops/s"] = synops.mean() / self.sample_time
+        return result_dict
