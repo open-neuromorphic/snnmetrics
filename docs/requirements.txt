@@ -1,0 +1,6 @@
+sphinx>=4.0
+sphinx-book-theme>=1.0.0
+myst_nb
+pbr
+matplotlib
+sphinx-autoapi
