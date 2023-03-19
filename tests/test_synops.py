@@ -23,7 +23,7 @@ def test_synops_conv_output():
     assert epoch_synops["synops"] == 4.5
 
 
-def test_synops_conv_output():
+def test_synops_conv_output_float_fanout():
     fanout = torch.tensor(3)
     output = torch.ones((2, 1, 3, 3))
     output2 = torch.ones((2, 1, 3, 3)) * 2

@@ -12,11 +12,13 @@ class SynOps(Metric):
 
     def __init__(self, fanout: torch.Tensor, sample_time: Optional[float] = None):
         super().__init__()
-        self.fanout = fanout
+        self.fanout = torch.as_tensor(fanout)
         self.sample_time = sample_time
         self.add_state(
             "synops_per_neuron",
-            default=[] if fanout.shape == torch.Size([]) else torch.zeros(fanout.shape),
+            default=[]
+            if self.fanout.shape == torch.Size([])
+            else torch.zeros(self.fanout.shape),
             dist_reduce_fx="sum",
         )
         self.add_state("total", default=torch.tensor(0), dist_reduce_fx="sum")
