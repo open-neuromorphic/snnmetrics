@@ -6,3 +6,4 @@ matplotlib
 sphinx-autoapi
 torchvision
 sinabs
+tqdm
