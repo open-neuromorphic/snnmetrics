@@ -4,3 +4,4 @@ myst_nb
 pbr
 matplotlib
 sphinx-autoapi
+torchvision

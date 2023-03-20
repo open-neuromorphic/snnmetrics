@@ -46,7 +46,7 @@ exclude_patterns = [
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = "sphinx_book_theme"
-html_title = snnmetrics.__version__
+html_title = "snnmetrics " + snnmetrics.__version__
 # html_logo = "_static/snnmetrics-logo-black.png"
 # html_favicon = "_static/snnmetrics_favicon.png"
 html_show_sourcelink = True
