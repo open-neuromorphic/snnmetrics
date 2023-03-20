@@ -5,3 +5,4 @@ pbr
 matplotlib
 sphinx-autoapi
 torchvision
+sinabs
