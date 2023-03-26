@@ -7,3 +7,4 @@ sphinx-autoapi
 torchvision
 sinabs
 tqdm
+ipywidgets
